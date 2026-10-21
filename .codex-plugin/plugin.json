@@ -1,0 +1,23 @@
+{
+  "name": "superpowers",
+  "version": "1.0.0",
+  "description": "UTA's Codex development skills",
+  "author": {
+    "name": "shoutahosoi11"
+  },
+  "license": "MIT",
+  "skills": "./skills/",
+  "hooks": {},
+  "interface": {
+    "displayName": "UTA Devkit",
+    "shortDescription": "Human-led design and readable TDD",
+    "developerName": "shoutahosoi11",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Interactive",
+      "Read",
+      "Write"
+    ],
+    "screenshots": []
+  }
+}

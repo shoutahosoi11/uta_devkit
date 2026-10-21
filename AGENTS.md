@@ -1,0 +1,13 @@
+# uta-devkit — Agent Instructions
+
+Target: **Codex and Claude Code only**.
+
+- Be concise and conclusion-first, especially in Japanese. Preserve important causal explanations.
+- For architecture, compare meaningful alternatives by unique properties, concrete user benefit/harm, system benefit/harm, and relative trade-offs. Human approval is required for material decisions.
+- Prefer the smallest implementation that satisfies confirmed user needs.
+- Inspect and reuse existing repository functions, business rules, validators and tests. Do not duplicate matching logic.
+- Prefer simple, common English and existing domain vocabulary. Longer, meaningful function and variable names beat ambiguous abbreviations.
+- Use test-driven development: test fails first; minimal implementation; refactor when green.
+- Consider existing feature regressions, state location/lifetime, SSOT, mutation ownership, async failure and ordering where relevant.
+
+See `skills/using-superpowers/SKILL.md` and `skills/human-led-design/SKILL.md`.
