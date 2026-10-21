@@ -41,8 +41,4 @@ bash tests/human-led-design/test-skill-structure.sh
 
 実際のClaude Code/Codexによる指示遵守は `tests/human-led-design/behavior-scenarios.md` に基づいて別途確認が必要です。
 
-## 著作権
 
-[obra/superpowers](https://github.com/obra/superpowers) を基に改変。元の著作権表示とMITライセンスは [LICENSE](LICENSE) に維持しています。
-
-LeetCodeのファイルは最新のツリーから除外しますが、過去のGit履歴には残ります。
