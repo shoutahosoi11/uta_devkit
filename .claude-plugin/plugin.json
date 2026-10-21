@@ -1,0 +1,15 @@
+{
+  "name": "superpowers",
+  "version": "1.0.0",
+  "description": "UTA's Claude Code development skills",
+  "author": {
+    "name": "shoutahosoi11"
+  },
+  "license": "MIT",
+  "keywords": [
+    "human-led-design",
+    "TDD",
+    "debugging",
+    "skills"
+  ]
+}
