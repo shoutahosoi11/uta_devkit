@@ -1,6 +1,6 @@
 ---
 name: test-driven-development
-description: Use when implementing any feature or bugfix, before writing implementation code
+description: Use when designing test cases, implementing any feature or bugfix, or changing tests, before writing implementation code
 ---
 
 # Test-Driven Development (TDD)
@@ -14,6 +14,10 @@ Write the test first. Watch it fail. Write minimal code to pass.
 **Violating the letter of the rules is violating the spirit of the rules.**
 
 ## When to Use
+
+**Before RED:** Read [test-design-guide.md](test-design-guide.md) to design tests from confirmed requirements and existing public contracts. Identify preserved behavior and potential regressions, choose representative normal/error/boundary cases, and select the smallest test layer that can catch each bug. Avoid redundant or implementation-coupled tests.
+
+**Design-only vs. implementation:** When the user requests test design only, follow the guide's A–D output format and do not change code or files. The guide's "今回はテスト設計のみを行う" instruction applies only in that mode. When TDD implementation is requested, use the guide for upfront case selection, then implement one failing test at a time using RED → GREEN → REFACTOR.
 
 **Always:**
 - New features
