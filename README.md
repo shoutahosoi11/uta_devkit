@@ -41,4 +41,6 @@ bash tests/human-led-design/test-skill-structure.sh
 
 実際のClaude Code/Codexによる指示遵守は `tests/human-led-design/behavior-scenarios.md` に基づいて別途確認が必要です。
 
+## ライセンス
 
+独自の貢献部分は [MIT License](LICENSE) に従います。Superpowers由来のコード・文書に適用される著作権表示とライセンスは [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md) を参照してください。
