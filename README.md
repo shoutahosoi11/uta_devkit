@@ -40,14 +40,19 @@ Skill未起動時も短文ルールを適用したい場合は、[setup/global-r
 
 単独で使うプロンプトであり、Skillの自動起動や既存の開発フローは変更しません。[設計方針と参照観点](docs/qa-review-sources.md) も参照できます。
 
+## テスト設計の依頼
+
+[TDD テスト設計ガイドの「チャットに貼る場合」](skills/test-driven-development/test-design-guide.md#チャットに貼る場合) の雛形を使い、対象機能・変更と仕様・守りたい意図を記入してください。設計のみならA〜Dの出力で止まり、ファイル変更やテスト実行は行いません。TDDでの実装依頼ではA〜Dを先に作り、Dの順に1件ずつ進めます。
+
 ## テスト
 
 ```bash
 bash tests/uta-devkit/test-layout.sh
 bash tests/human-led-design/test-skill-structure.sh
+bash tests/test-driven-development/test-skill-structure.sh
 ```
 
-実際のClaude Code/Codexによる指示遵守は `tests/human-led-design/behavior-scenarios.md` に基づいて別途確認が必要です。
+実際のClaude Code/Codexによる指示遵守は、[human-led-designの行動確認](tests/human-led-design/behavior-scenarios.md) と [TDDテスト設計の行動確認](tests/test-driven-development/behavior-scenarios.md) に基づいて別途確認が必要です。構造テストのPASSだけでは、行動確認済みとは扱いません。
 
 ## ライセンス
 
