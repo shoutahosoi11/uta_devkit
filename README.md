@@ -1,6 +1,6 @@
 # uta-devkit
 
-**Claude Code と Codex 専用の個人向け開発Skill集。**
+**Claude Code と Codex 専用の開発Skill集。**
 
 ## Claude Code
 
