@@ -32,6 +32,14 @@ bash setup/install-codex.sh
 
 Skill未起動時も短文ルールを適用したい場合は、[setup/global-response-style.md](setup/global-response-style.md) を `~/.codex/AGENTS.md` と `~/.claude/CLAUDE.md` に追記してください。
 
+## 実装後のQAレビュー
+
+[QAレビュープロンプト](prompts/qa-review.md) の全文をClaude CodeまたはCodexに渡し、冒頭の入力欄で対象・仕様・環境を指定してください。未指定項目の扱いはプロンプトに定義しています。
+
+仕様・コードのレビュー、テストケース設計、既存テスト・API・画面での実動作確認を対象とします。設計範囲外への影響、セキュリティ、性能も確認し、未実行を合格にしません。実装・修正・新しい自動テストの追加は行わせません。
+
+単独で使うプロンプトであり、Skillの自動起動や既存の開発フローは変更しません。[設計方針と参照観点](docs/qa-review-sources.md) も参照できます。
+
 ## テスト
 
 ```bash
