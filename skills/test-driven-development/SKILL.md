@@ -15,9 +15,9 @@ Write the test first. Watch it fail. Write minimal code to pass.
 
 ## When to Use
 
-**Before RED:** Read [test-design-guide.md](test-design-guide.md) to design tests from confirmed requirements and existing public contracts. Identify preserved behavior and potential regressions, choose representative normal/error/boundary cases, and select the smallest test layer that can catch each bug. Avoid redundant or implementation-coupled tests.
+**Before RED:** Read [test-design-guide.md](test-design-guide.md) and produce its A–D output from confirmed requirements and existing public contracts. Test only public contracts: representative normal/error/boundary cases in the smallest layer that can catch each bug. Do not add a test per function, and do not fix implementation details.
 
-**Design-only vs. implementation:** When the user requests test design only, follow the guide's A–D output format and do not change code or files. The guide's "今回はテスト設計のみを行う" instruction applies only in that mode. When TDD implementation is requested, use the guide for upfront case selection, then implement one failing test at a time using RED → GREEN → REFACTOR.
+**Two modes** (defined in the guide): a design-only request ends at A–D with no code or file changes; an implementation request produces A–D first, then implements the cases in D one at a time with RED → GREEN → REFACTOR.
 
 **Always:**
 - New features
@@ -199,6 +199,8 @@ Confirm:
 
 **Other tests fail?** Fix now.
 
+**Scope check:** Compare the Git diff against the files agreed as changeable in the test design. Report any edit outside that scope, whether or not the tests pass.
+
 **"Other tests" means the project's suite, not just your file.** A
 green run of the test you wrote is not a green suite. Before you call
 the change done, run the project's test command (bare `pytest`,
@@ -311,14 +313,16 @@ Extract validation for multiple fields if needed.
 
 Before marking work complete:
 
-- [ ] Every new function/method has a test
+- [ ] Every public contract listed in the design's A has a test; internal helpers are not tested directly
+- [ ] Every case in the design's B went through RED → GREEN; none were written in a batch
 - [ ] Watched each test fail before implementing
 - [ ] Each test failed for expected reason (feature missing, not typo)
 - [ ] Wrote minimal code to pass each test
-- [ ] All tests pass
+- [ ] All tests pass (full project suite)
 - [ ] Output pristine (no errors, warnings)
 - [ ] Tests use real code (mocks only if unavoidable)
-- [ ] Edge cases and errors covered
+- [ ] Representative error and boundary cases from the design are covered; items in C are reported, not silently dropped
+- [ ] No edits outside the agreed file scope, or every such edit is reported
 
 Can't check all boxes? You skipped TDD. Start over.
 
