@@ -23,6 +23,14 @@ This is not negotiable. You cannot rationalize your way out of this.
 
 Then announce "Using [skill] to [purpose]" and follow the skill exactly. If it has a checklist, create a todo per item.
 
+## Research and Design Checks for Development
+
+Apply these rules throughout requirements discovery, design, implementation, test design, verification, and QA. Pass the applicable rules to any delegated agent.
+
+At each stage, identify its concrete technical questions. Search the current repository for relevant implementations, callers, contracts, and tests, and search GitHub public open-source projects for relevant approaches. Reuse research already performed for the same question; search again when a new question arises. Inspect the relevant source, not only a search snippet. Record the local paths and public links, what each example shows, and why an approach is or is not applicable; report if no relevant example was found. Prefer existing project logic when its behavior matches; do not make an external example or the current implementation the project's specification. Check compatibility and license before copying or adding a dependency. Never include private code, credentials, or confidential details in public searches. If public search is unavailable or prohibited, report it as not performed and continue with available evidence.
+
+After implementation and before claiming completion, compare the actual implementation and complete task-owned diff against the confirmed requirements and design, including permitted scope and behavior to preserve. Trace affected callers and shared data, and inspect relevant tests and observable behavior; passing tests alone does not establish design compliance. Report each mismatch with its design source, expected and actual behavior, evidence, and impact. Correct it within the authorized scope and reverify, or report it unresolved. If a design, scope, or evidence is missing, mark the affected comparison unverified rather than inventing approval. Preserve design-only requests' prohibition on file changes and test execution.
+
 ## Skill Priority
 
 When multiple skills apply, process skills come first — they set the approach, then implementation skills (frontend-design, etc.) carry it out. Brainstorming and systematic-debugging are Superpowers' most common process skills, but the rule holds for any of them.

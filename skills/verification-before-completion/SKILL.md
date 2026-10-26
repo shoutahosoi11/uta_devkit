@@ -35,6 +35,12 @@ BEFORE claiming any status or expressing satisfaction:
 Skip any step = lying, not verifying
 ```
 
+## Compare Implementation with Design
+
+After implementation, before claiming completion, locate the confirmed requirements, design decisions, acceptance criteria, and authorized change scope, including decisions recorded in the conversation. Compare each with the actual behavior and complete task-owned changes, including committed branch changes and relevant staged, unstaged, and untracked files. Follow changed shared functions, callers, data, and configuration to identify effects on behavior meant to stay unchanged. Use relevant code, tests, and available runtime evidence; a passing test suite alone does not establish compliance.
+
+For each discrepancy, report the design source, expected and actual behavior, evidence, and impact. Fix it within the authorized scope and recheck; otherwise report it unresolved. If a design or evidence cannot be found, compare against the confirmed requirements that are available and mark the remaining comparison unverified. Never infer approval from the implementation or silently expand the agreed scope.
+
 ## Common Failures
 
 | Claim | Requires | Not Sufficient |
