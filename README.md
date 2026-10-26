@@ -32,6 +32,14 @@ bash setup/install-codex.sh
 
 Skill未起動時も短文ルールを適用したい場合は、[setup/global-response-style.md](setup/global-response-style.md) を `~/.codex/AGENTS.md` と `~/.claude/CLAUDE.md` に追記してください。
 
+## 開発中の調査と設計確認
+
+[共通ルール](skills/using-superpowers/SKILL.md#research-and-design-checks-for-development)を読み込んだ開発では、各工程で対象リポジトリの実装とGitHubの公開OSSを調べ、参考にした場所と適用可否を記録します。実装後は、確定した要件・設計と実際の変更、影響を受ける既存機能を照合し、差異と未確認事項を報告します。
+
+Claude Codeでは、このリポジトリをプラグインとして読み込むと、開始時に共通ルールが注入されます。Codexでは共通Skillが読み込まれたときに適用されます。Skillが読み込まれない場合にも適用したいときは、上記の `setup/global-response-style.md` のルールを自分の `AGENTS.md` に追記してください。
+
+Codexのインストールは同名の既存Skillを上書きしません。更新時は `~/.agents/skills/using-superpowers` と `~/.agents/skills/verification-before-completion` が意図したリポジトリを参照しているか確認してください。別のコピーや古いリンクを使っている場合は、利用中のSkillを更新してCodexを再起動してください。
+
 ## 実装後のQAレビュー
 
 [QAレビュープロンプト](prompts/qa-review.md) の全文をClaude CodeまたはCodexに渡し、冒頭の入力欄で対象・仕様・環境を指定してください。未指定項目の扱いはプロンプトに定義しています。
@@ -52,7 +60,7 @@ bash tests/human-led-design/test-skill-structure.sh
 bash tests/test-driven-development/test-skill-structure.sh
 ```
 
-実際のClaude Code/Codexによる指示遵守は、[human-led-designの行動確認](tests/human-led-design/behavior-scenarios.md) と [TDDテスト設計の行動確認](tests/test-driven-development/behavior-scenarios.md) に基づいて別途確認が必要です。構造テストのPASSだけでは、行動確認済みとは扱いません。
+実際のClaude Code/Codexによる指示遵守は、[human-led-designの行動確認](tests/human-led-design/behavior-scenarios.md)、[TDDテスト設計の行動確認](tests/test-driven-development/behavior-scenarios.md)、[調査と設計照合の行動確認](tests/uta-devkit/behavior-scenarios.md) に基づいて別途確認が必要です。構造テストのPASSだけでは、行動確認済みとは扱いません。
 
 ## ライセンス
 
