@@ -33,11 +33,11 @@ A technical choice is *not* automatically a human decision just because two impl
 
 ## 3. Compare Causally and Relatively
 
-For every meaningful alternative, explain:
+For every meaningful alternative, reason through:
 
 **Different technical/structural property → why it produces the effect → user benefit and harm → system benefit and harm.**
 
-- Evaluate **both user and system**, with user consequences first. If no material effect is identifiable, write "No meaningful difference identified"; never invent a benefit to fill a box.
+- Evaluate **both user and system**, with user consequences first. If no material effect is identifiable, do not invent one. Keep the full comparison in the design analysis; communicate only differences that matter for the current human decision.
 - Name concrete alternatives and describe the **differences relative to other feasible options**.
 - Separate **shared requirement satisfaction** from **differentiating advantages**. An ability shared by URL and localStorage (e.g., reload persistence) is not by itself a reason to choose URL.
 - Explain project-specific conditions. Compare implementation scope, reuse, dependencies, and existing-feature impact *when relevant*, without making every answer a long checklist.
@@ -47,7 +47,7 @@ For every meaningful alternative, explain:
 
 ## 4. State Management Review (only when relevant)
 
-Explain the proposed state/data-flow diagram or concise mapping:
+Review the following aspects of proposed state/data flow. Explain only the parts that materially affect this decision; use a simple example or short mapping instead of dumping the entire checklist:
 
 1. **Location and lifetime:** where each state is owned/stored (component, URL, cache, DB, browser), why there, and when it expires or is destroyed.
 2. **SSOT and duplication:** what is authoritative; is the displayed value derived from existing data? If replicated or cached, what synchronizes and invalidates it?
@@ -58,38 +58,25 @@ Explain the proposed state/data-flow diagram or concise mapping:
 
 Distinguish the authoritative server record from a client-side query cache: a UI cache can be the single source for *rendering* without being the authoritative persisted record. An editable draft may be a deliberately distinct state, not an accidental duplicate.
 
-## 5. Mandatory Decision Output (keep concise)
+## 5. Decision Communication (example-first, concise)
 
-Use these headings **in this order** for substantive design discussion; skip inapplicable subsections only when explicitly marked optional. For a narrow question, cover only the decision at hand.
+**Do not force the old seven-heading design template or a full pros/cons matrix into a user-facing proposal.** The checks above are required for sound decisions, not headings that must be printed.
 
-### 1. ユーザーの課題
-Who is affected, what problem is solved, desired outcome, and known facts versus hypotheses.
+Before presenting a design, review the actual user problem, existing behavior, concrete user/system benefits and harms, meaningful alternatives, constraints, state/SSOT, error and concurrency handling, and regression impact as applicable. **Keep this analysis rigorous; make the explanation easy to follow.** Do not omit an unresolved material risk or choice just to make the response short.
 
-### 2. 既存システムと制約
-Only relevant existing behavior, reusable components, hard constraints, and important impact surface. Show the design/state/data flow when relevant.
+Use this default communication flow, without numbering or a heading for every step:
 
-### 3. 選択肢
-For **each named option**, show:
-- **技術的性質:** how this differs from the other options.
-- **ユーザーのメリット:** property → causal reason → concrete improvement for users.
-- **ユーザーのデメリット:** property/constraint → causal reason → concrete user harm or risk.
-- **システムのメリット:** property → causal reason → reliability/maintenance/performance/implementation improvement.
-- **システムのデメリット:** property → causal reason → complexity/cost/risk.
-- **既存機能への影響:** **only when relevant**, describe what might change or regress.
+1. **結論 (1–2 sentences):** What is being proposed or decided?
+2. **具体例:** Walk through one realistic user action and visible before/after result. Explain ambiguous terms in ordinary words (for example, what "bulk import" means, or exactly when a deletion happens). Label hypothetical values as examples.
+3. **重要な比較:** Compare only the alternatives' differentiating properties and meaningful trade-offs; explain why each changes the user's experience and the system's behavior. Mention drawbacks where they could change the decision.
+4. **推奨理由:** Why does this choice fit this repository and confirmed user needs, what does it sacrifice, and what condition would change the recommendation? If evidence is insufficient, say so.
+5. **質問（必要な場合のみ）:** Ask **one** specific question only when a material human-owned decision is still unresolved. Never ask merely to complete a template or re-ask something already decided.
 
-For a category without a meaningful effect, state that briefly, rather than inventing one.
-
-### 4. 選択肢間の比較
-Separate common outcomes from unique/relative advantages. Show the smallest change satisfying the confirmed goal and what each option sacrifices.
-
-### 5. AIの推奨
-State recommendation **or that the evidence is insufficient**, its comparative and project-specific rationale, concrete user/system gains and losses, accepted trade-off, assumptions, and **what condition would reverse the recommendation**.
-
-### 6. 人間への質問
-Ask exactly one material question that resolves the next human-owned trade-off. Do not ask about implementation details the agent can decide.
-
-### 7. ADR（承認後のみ）
-After human approval, record decision, options rejected and why, known consequences, and reversal conditions using [templates/ADR.md](templates/ADR.md). For significant decisions, save an ADR in the consuming project's own docs; for small changes, record the decision in the approved design/chat. Never mark a proposal as approved.
+- Prefer a concrete example over abstract terms, long taxonomies, repeated matrices, or vague references such as "at deletion time." If a user would need to ask "when?", "whose data?", or "what operation?", make the example more specific.
+- For narrow questions, answer just that question. For complex decisions, present the highest-impact choice first and split the rest into later decisions, rather than flooding the user with every branch.
+- Do not hide a consequential authorization, privacy, security, data-loss, reliability, cost, or existing-feature trade-off; explain it plainly when it affects the choice.
+- Detailed tables, state diagrams, and full design documents are available **on request** or when truly necessary for informed approval. A concise explanation is not approval of unpresented material decisions.
+- Only after explicit human approval, record significant decisions, rejected alternatives and reasons, consequences, and reversal conditions in an ADR using [templates/ADR.md](templates/ADR.md). For small changes, record the approved decision in the design/chat. Never label a proposal "approved" without approval.
 
 **No implementation before explicit approval of material design decisions and the design itself.** Reading, exploration and non-production analysis are allowed. A human-approved throwaway spike is allowed, but must not silently become production code. Skipping discovery questions never implies approval of unpresented significant choices.
 
