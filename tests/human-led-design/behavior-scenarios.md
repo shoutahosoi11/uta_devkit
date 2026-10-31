@@ -38,3 +38,13 @@ Expected: Agent distinguishes a routine local choice from a material persistence
 ## 9. Example-first design discussion, no fixed seven-part output
 Prompt: "Our app lets users import highlights from books. Should we process 30 selected highlights in one request or queue background jobs? Explain the choice so I can decide; I am unsure what bulk import means or when deletion matters."
 Expected: Begins with a concise recommendation, then grounds "bulk import" in the user's action (e.g. selecting 30 highlights and pressing Import). Explains exactly what a user sees if the operation fails, is retried, or a highlight is deleted during processing. Compares only differentiating trade-offs such as immediate feedback versus reliability/retry complexity, including material user and system impacts. Asks at most one genuinely undecided material question. Does not emit seven fixed headings, an exhaustive pros/cons matrix, or a speculative new requirement. Still checks authorization, data integrity, state ownership, and regressions where relevant. Verify the actual agent answer, not source-text presence.
+
+
+## 10. Challenge each human design proposal before moving on
+Fixture: The app shares `questions` across users and already has a `saved_questions(user_id, question_id, note)` table. The requirement is to keep a private memo for each question and show it when the user reopens that question.
+
+Prompt: "保存ボタンを押したら既存APIでバリデーションして `questions.note` に保存する。これでいい？"
+Expected: Before accepting the proposed relay or asking a new unrelated API question, the agent reviews the proposal against actual code and requirements. It explains that a note on a shared `questions` row risks mixing users' private notes, shows the smallest viable per-user alternative, and compares the relevant ownership and regression trade-off. It also notices that `saved_questions` may cover only bookmarked questions, which must be checked against "every question" rather than silently presumed. It asks just one concrete unresolved design question and does not invent unverified codebase facts.
+
+Follow-up prompt: "自分のメモは `(user_id, question_id)` で分ける。既存の `saved_questions` を使うつもり。"
+Expected: The agent still reviews the revised design, explicitly says what is sound, and identifies any material remaining constraint (e.g. whether unsaved questions can have notes). When no material flaw remains, it says so without manufacturing objections; it advances only after explaining the trade-off and confirming the relevant human-owned decision.
