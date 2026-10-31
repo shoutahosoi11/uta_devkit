@@ -11,30 +11,30 @@ description: Use when a feature needs human-understood end-to-end implementation
 
 User outcomes come first. System performance, reliability, security, maintenance, existing-feature impact, and cost are real constraints, not goals to optimize independently. Favor the smallest change that solves the validated user problem.
 
-## 0. Human-Owned Implementation Relay (mandatory first, before design debate)
+## 0. AI-Initiated Human-First Design (mandatory opening)
 
-**Learning gate:** Before debating architecture or writing tests, the human should be able to describe **how this particular feature can be connected from user input to user-visible response**, in their own words. The goal is a rough, workable call/data flow, **not** correct code or a predetermined architecture. The agent supplies verified repository facts and coaching; the human assembles and understands the relay.
+**The agent must initiate the human's thinking by asking a concrete question. Do not wait for the human to volunteer a design, and do not first propose a finished architecture or start implementation.** The human should understand a rough relay through real code and make the meaningful pre-implementation design choices. One question per turn, not a questionnaire.
 
-Proceed in this order for meaningful feature additions or changes:
+1. **Ground the first question (agent):** Read the feature request and inspect only relevant repository entry points, reusable functions, contracts, and tests. State one concrete user input/action and the intended response or screen change. Show 2-5 verified existing functions/files with a short role and input/output if relevant; if not yet found, say "未確認". Do not invent function names or insist on an unverified reuse.
+2. **Prompt the human first (agent -> human; mandatory):** Ask, proactively and explicitly:
+   「まず自分ならどうつなぐか考えてみて。ユーザーの［操作・入力］から［結果］まで、既存の［確認できた関数］をどこで呼んで、どこを新しく書くと実現できそう？ ざっくり2〜3行でOK。」
+   The human sketches a relay such as `user action -> UI -> reused/new API client -> handler -> business logic -> DB/job -> response -> UI`. Use only applicable steps; asynchronous acknowledgement and later completion may be separate. Mark each handoff **reuse/import existing / modify existing / write new / unknown**, plus the main data passed. Do not pre-answer the full relay. If the human already gave a relay, reflect it without asking again.
+3. **Check understanding (agent):** Compare the human's relay to inspected code, explain only consequential missing/misplaced handoffs (one at a time), and ask them to correct or complete the flow. Confirm they roughly understand input, existing function calls, new code, server/data boundaries, and the returned user-visible result. No line-by-line code or exact syntax is required.
+4. **Prompt the human for an initial design policy (agent -> human; mandatory):** Once the relay is understood, ask:
+   「この機能はまずどこまで作れば十分だと思う？ どんな型・関数・処理の分け方にしたい？ 気になる点を1つだけでも教えて。」
+   Accept an initial guess rather than a complete architecture. The agent must help when stuck: offer **one very short, clearly labeled AI suggestion** for a minimal design policy and **one** relevant issue from the actual feature, in about one sentence each, then ask the human to accept, change, or challenge them. Do **not** replace this prompt with a long AI proposal or a repeat of the same question.
+5. **Prompt the human to choose the next design discussion (agent -> human):** Ask only what remains unresolved, e.g., 「このつなぎ方で、一番先に決めたいのはどこ？」 If no concern arises, proactively surface **one** high-impact issue with one concrete input/output example. Debate it, then move to the next material issue. The agent supplies research, alternatives, and risks; the human chooses the consequential trade-offs.
+6. **Move to the design gate, not implementation:** Once the relevant questions are resolved, summarize and request explicit design approval under **Pre-Implementation Gates** below. The relay and preliminary policy are understanding aids, not approval.
 
-1. **Name the observable scenario.** The agent states one concrete example of the user action, example input, and intended response or visible screen change, briefly. Verify expectations with the human only when necessary.
-2. **Inspect existing pieces.** Read the real repository before suggesting reuse. Show only relevant existing files/functions (typically 2-5), with their roles, important inputs/outputs, and known caller/callee relationships. Identify which functionality already exists. Name actual functions and files when verified; never invent them or claim an uninspected function is reusable. Avoid dumping code or a completed design.
-3. **Human draws the relay.** Ask the human to explain, in a few lines, how they think the request travels:
-   `user action + input -> UI/event -> existing/new function -> API -> server processing -> DB/external service -> response -> UI update`
-   Include only stages relevant to the feature (e.g., asynchronous jobs may return "accepted" before a later result). At each handoff, prompt the human to mark **reuse/import existing**, **modify existing**, **write new**, or **unknown**, and to name what data is passed (e.g., user ID, item ID, status). The human can use plain language and may be unsure of names. **Do not pre-fill the entire answer for them.**
-4. **Help complete the relay without taking it over.** Restate the human's proposed flow and map it to verified functions/files. Point out one important missing or incorrect handoff at a time; give a small hint or the next existing piece, then ask the human to connect it. If stuck, show one provisional example explicitly labeled as the agent's, and ask the human to restate or correct it. Never turn this into a long quiz.
-5. **Confirm end-to-end understanding.** Before proceeding, ensure the human can roughly say (a) where user input enters, (b) which existing functions are reused and where, (c) what new/changed processing is needed, (d) what crosses the API/data boundaries, and (e) how the user receives the result. Accuracy at the responsibility/call-chain level is enough; do not demand exact syntax or implementation internals. Present the agreed relay in a short summary with verified existing paths and clearly provisional new steps.
-6. **Human attempts a rough design policy and discussion point.** After the relay is understood, ask the human to state, briefly, (a) the rough policy/scope ("まずはここまで作ればよさそう", including what can wait) and (b) one design concern to discuss ("ここはどうする？"). A first guess is enough; do not require correct jargon or a complete plan. **If the human is stuck or says "分からない", the agent must help immediately**, not repeat the same question: use repository facts to suggest **one simple provisional policy and one likely design question**, each in **one short sentence**, with a single concrete example if necessary. Clearly label these as AI suggestions, then ask the human to accept, adjust, or challenge them. Do not dump categories, multi-option architecture comparisons, or lengthy explanations at this stage. If still unsure, offer up to two concise choices and explain their key difference in one line; let the human choose or accept a clearly provisional starting point. Debate trade-offs more deeply only **after** the relay is understood and a meaningful discussion point is selected, using the approval rules below.
+**Stuck handling applies at every human-thinking step:** give a tiny hint or a 1-2 line example rooted in verified code, then ask one short question. If needed, offer two options with their key difference in one line; the user can select or edit one. Do not force the human to know vocabulary, flood them with lists, or make the process an exam. For purely mechanical changes, use a brief relay check instead of the full interview.
 
-**Default minimal prompt to the human (after reviewing relevant existing pieces):**
-「既存の○○関数は△△を受け取って□□を返します。今回のユーザー操作から画面の結果まで、どこでこの関数を呼び、どこを新しく書けばつながると思う？ ざっくりでOK。」
+**Illustrative example only (not a claim about any repo):**
+- Scenario: user taps "Save problem" with `problemId`; UI should show saved status.
+- Agent first shows verified reusable API client and auth functions, then **asks the human** where they would be called and what new save logic is needed.
+- Human relay: button -> **reuse** client -> **reuse** auth -> **new** save use case -> **extend/reuse** DB access -> response -> **update** UI.
+- Agent checks the real call chain. Then **asks the human** how much to implement now and what to discuss (e.g., saving the same problem twice). Only after discussion and approval does planning begin.
 
-**Example (illustrative, not an assertion about any repository):**
-- User presses "Save problem" with `problemId`.
-- Human relay: button handler -> **reuse existing** API client -> **reuse existing** server auth -> **new** save use case -> **reuse or extend** repository -> DB -> JSON response -> **update** UI state.
-- The agent verifies actual code, corrects the relevant boundaries, and helps the human identify any missing return/error path before debating schema, concurrency, or types.
-
-**Do not:** substitute an agent-authored architecture diagram for the human's understanding; rush straight to design option tables; invent an existing function; require line-by-line code; or demand that the human know exact signatures before the agent has shown the existing pieces. Reuse already provided human explanations; do not ask the same question twice. For trivial mechanical changes, use a short relay check rather than a lengthy ceremony.
+**Anti-pattern:** Agent asks "add save functionality?", chooses a data model and API, displays a seven-section design, and writes tests without first eliciting the human's own relay and design questions.
 
 ## 1. Establish Context
 
@@ -46,7 +46,7 @@ Proceed in this order for meaningful feature additions or changes:
 ## 2. Sort Decisions
 
 **Human decision (consult + explicit approval):**
-- The rough user-input-to-response relay: which existing functions to reuse, which handoffs to add, and what implementation questions to debate.
+- The human's rough user-input-to-response relay, initial scope/model hypothesis, and the design questions to debate (with succinct agent scaffolding when needed).
 - User problem, UX/behavior, business rules, priorities and accepted trade-offs.
 - Material component ownership, persistent data model, SSOT, API contracts, system boundaries, new dependencies, irreversible or costly architecture choices.
 - Any choice whose best answer depends on what the user values more.
@@ -56,6 +56,20 @@ Proceed in this order for meaningful feature additions or changes:
 - Clear technical improvements with no meaningful product trade-off.
 
 A technical choice is *not* automatically a human decision just because two implementations exist. Escalate when the difference materially affects users, system constraints, existing functions, or future reversibility. Present the highest-impact decision first, **one question at a time**.
+
+## 2.5 Pre-Implementation Design Questions (agent prompts; human decides)
+
+After the human understands the relay, **the agent must ask targeted questions to determine what needs to be decided before implementation**, one relevant decision at a time. The human does not have to discover every issue unaided. Start from the human's concern; surface important overlooked ones without turning this into a checklist readout.
+
+Review the following **internally** and prompt only the material unresolved items:
+- **Scope and style:** what is sufficient now vs future work; existing project conventions, pure function vs stateful component, and whether a new abstraction is justified.
+- **Domain and data model:** what the values represent, whether different meanings should have distinct types (e.g., identifier versus calculated points), valid ranges, representation and mutability.
+- **Function/interface and responsibility:** which existing functions to call/import, which new functions own each step, their key inputs/outputs, and API/data boundaries.
+- **Invalid/unspecified behavior:** missing, malformed, duplicated, or out-of-range input; errors or user-visible responses; type-level prevention versus runtime validation and trust boundaries.
+- **State and consistency when applicable:** where truth lives, who can change it, concurrency/retries, history recomputation vs incremental mutation, security and existing-feature impact.
+- **Testable behavior:** observable examples, boundary/error cases, regression promises, and unresolved requirements that must become explicit decisions and tests.
+
+For each material decision: explain the concrete case in plain language, offer the smallest feasible alternatives and differentiating trade-offs, ask **one** concise question, and await the human's choice. The human should be able to say "we chose X because Y, instead of Z because W" in ordinary terms. An AI recommendation is not approval. Prefer solving only the current published/confirmed scope; never silently implement speculative future behavior.
 
 ## 3. Compare Causally and Relatively
 
@@ -106,9 +120,19 @@ Use this default communication flow, without numbering or a heading for every st
 
 **No implementation before explicit approval of material design decisions and the design itself.** Reading, exploration and non-production analysis are allowed. A human-approved throwaway spike is allowed, but must not silently become production code. Skipping discovery questions never implies approval of unpresented significant choices.
 
-## 6. Handoff and Learning
+## 6. Pre-Implementation Gates (both require human approval)
 
-After approval, have the human review the main expected behaviors and test boundaries, then hand the approved design to superpowers:writing-plans; the normal TDD, implementation, verification, and review skills remain in charge. If implementation reveals a new material choice, pause for a new human decision. Give a concise design-to-code walkthrough on request using superpowers:codebase-understanding.
+**Gate A — Design agreement (before writing the implementation plan):**
+Summarize compactly: (1) current scope and what is deliberately deferred; (2) one input -> processing relay -> observable response using **verified existing filenames/functions** and **proposed new** ones; (3) important domain values/types, boundaries, ownership/state and source of truth when applicable; (4) invalid/unspecified behavior and failures; (5) main design alternatives and why the chosen one fits. Mark any still-open material question and resolve it before proceeding. **Explicitly ask the human to approve or correct the design.** Neither a first draft of the relay nor silence is design approval.
+
+**Gate B — Test list and implementation plan (after Gate A, before production code):**
+Use `superpowers:writing-plans` and the repository's `skills/test-driven-development/test-design-guide.md` to prepare a plan. Show the human (a) files/functions to reuse, create or change; (b) concrete user-visible cases and expected results, including relevant normal, boundary, error and regression cases (and type-level tests when useful); (c) case-by-case RED -> GREEN -> REFACTOR order; (d) verification commands and relevant risks. Separate tests that must first fail from characterization checks that already pass. **Ask for explicit approval of both the test list and implementation plan.** Do not code, edit production files, or start TDD until Gate A and Gate B are approved. A broad "start the feature" request is not approval of a plan the user has never seen.
+
+Keep user-facing summaries short, with one decision/question at a time. For a trivial non-architectural change, use a smaller but still clear plan and approval. If a new material design choice appears in implementation, stop and return to Gate A, then update Gate B. Record significant approved design choices and rejected alternatives in an ADR as specified above.
+
+## 7. Handoff and Learning
+
+Once both gates are approved, implement through the normal TDD, verification, and review skills. The agent owns the actual RED -> GREEN -> REFACTOR execution; the human owns the confirmed behavior and consequential design choices. Give a concise design-to-code walkthrough on request using superpowers:codebase-understanding.
 
 Only propose reusable updates to this skill/constitution after concrete observed problems. Edit them **only with human approval**, test against cases that previously failed, and avoid storing project-specific rules here.
 
