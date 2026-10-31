@@ -7,7 +7,7 @@ description: Use when a feature needs human-understood end-to-end implementation
 
 ## Core Rule
 
-**The human owns product value and significant design decisions. The agent owns research, comparisons, and implementation after approval.** Read [constitution.md](constitution.md). Use this skill within superpowers:brainstorming, before its design-approval gate. Do not restart brainstorming or replace superpowers:writing-plans.
+**The human owns product value and significant design decisions. The agent owns research, comparisons, and implementation after approval.** Read [constitution.md](constitution.md) and **[the t-wada design-before-TDD case study](examples/twada-design-before-tdd.md)** before initiating the design conversation. Use this skill within superpowers:brainstorming, before its design-approval gate. Do not restart brainstorming or replace superpowers:writing-plans.
 
 User outcomes come first. System performance, reliability, security, maintenance, existing-feature impact, and cost are real constraints, not goals to optimize independently. Favor the smallest change that solves the validated user problem.
 
@@ -59,7 +59,7 @@ A technical choice is *not* automatically a human decision just because two impl
 
 ## 2.5 Pre-Implementation Design Questions (agent prompts; human decides)
 
-After the human understands the relay, **the agent must ask targeted questions to determine what needs to be decided before implementation**, one relevant decision at a time. The human does not have to discover every issue unaided. Start from the human's concern; surface important overlooked ones without turning this into a checklist readout.
+After the human understands the relay, **the agent must ask targeted questions to determine what needs to be decided before implementation**, one relevant decision at a time. Follow the **human/AI role sequence, actual pre-implementation decision examples, and decision ledger** in [the t-wada case study](examples/twada-design-before-tdd.md) as a process reference, **not as an architecture to copy**. The human does not have to discover every issue unaided. Start from the human's concern; surface important overlooked ones without turning this into a checklist readout.
 
 Review the following **internally** and prompt only the material unresolved items:
 - **Scope and style:** what is sufficient now vs future work; existing project conventions, pure function vs stateful component, and whether a new abstraction is justified.
@@ -70,6 +70,8 @@ Review the following **internally** and prompt only the material unresolved item
 - **Testable behavior:** observable examples, boundary/error cases, regression promises, and unresolved requirements that must become explicit decisions and tests.
 
 For each material decision: explain the concrete case in plain language, offer the smallest feasible alternatives and differentiating trade-offs, ask **one** concise question, and await the human's choice. The human should be able to say "we chose X because Y, instead of Z because W" in ordinary terms. An AI recommendation is not approval. Prefer solving only the current published/confirmed scope; never silently implement speculative future behavior.
+
+**Mandatory internal decision ledger before Gate A:** Audit every row of the case study's decision ledger for the **current feature**, including scope, observable request/response, real function relay, domain types, responsibility/interfaces, state/derivation, invalid/unspecified behavior, alternatives, tests and verification. Label each **decided**, **not applicable (reason)**, or **deliberately deferred (why it cannot affect this scope)**. Any unresolved decision that changes current behavior, public contracts, safety or test expectations **blocks Gate A**. Human-facing discussion stays brief: ask the user **one question at a time**, not the whole ledger.
 
 ## 3. Compare Causally and Relatively
 
@@ -123,7 +125,7 @@ Use this default communication flow, without numbering or a heading for every st
 ## 6. Pre-Implementation Gates (both require human approval)
 
 **Gate A — Design agreement (before writing the implementation plan):**
-Summarize compactly: (1) current scope and what is deliberately deferred; (2) one input -> processing relay -> observable response using **verified existing filenames/functions** and **proposed new** ones; (3) important domain values/types, boundaries, ownership/state and source of truth when applicable; (4) invalid/unspecified behavior and failures; (5) main design alternatives and why the chosen one fits. Mark any still-open material question and resolve it before proceeding. **Explicitly ask the human to approve or correct the design.** Neither a first draft of the relay nor silence is design approval.
+Summarize compactly: (1) current scope and what is deliberately deferred; (2) one input -> processing relay -> observable response using **verified existing filenames/functions** and **proposed new** ones; (3) important domain values/types, boundaries, ownership/state and source of truth when applicable; (4) invalid/unspecified behavior and failures; (5) main design alternatives and why the chosen one fits. **First complete the case study's decision ledger for all relevant current-scope decisions**, showing only important decisions and genuine deferrals to the human. Mark any still-open material question and resolve it before proceeding. **Explicitly ask the human to approve or correct the design.** Neither a first draft of the relay nor silence is design approval.
 
 **Gate B — Test list and implementation plan (after Gate A, before production code):**
 Use `superpowers:writing-plans` and the repository's `skills/test-driven-development/test-design-guide.md` to prepare a plan. Show the human (a) files/functions to reuse, create or change; (b) concrete user-visible cases and expected results, including relevant normal, boundary, error and regression cases (and type-level tests when useful); (c) case-by-case RED -> GREEN -> REFACTOR order; (d) verification commands and relevant risks. Separate tests that must first fail from characterization checks that already pass. **Ask for explicit approval of both the test list and implementation plan.** Do not code, edit production files, or start TDD until Gate A and Gate B are approved. A broad "start the feature" request is not approval of a plan the user has never seen.
