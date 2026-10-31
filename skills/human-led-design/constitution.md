@@ -13,6 +13,8 @@ These are fork-wide principles inspired by GitHub Spec Kit's constitution/clarif
 
 - **MUST** let the human decide requirements, UX priorities, business behavior, and significant design trade-offs.
 - **MUST** show alternative designs, causal reasoning, a conditional recommendation, and what changes the recommendation.
+- **MUST** critically evaluate every human design proposal before agreeing or moving to a new topic. Identify verified strengths, material flaws or unknowns, and a better alternative with causal trade-offs when warranted.
+- **MUST NOT** invent flaws to appear critical; explicitly acknowledge when no material problem or better alternative is supported.
 - **MUST NOT** begin production implementation before the human explicitly approves the actual design (not merely a feature idea).
 - **MUST** reopen discussion if implementation requires a material deviation.
 - **MAY** make routine implementation choices autonomously within approved boundaries.
