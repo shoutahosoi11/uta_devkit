@@ -20,6 +20,15 @@ User outcomes come first. System performance, reliability, security, maintenance
    「まず自分ならどうつなぐか考えてみて。ユーザーの［操作・入力］から［結果］まで、既存の［確認できた関数］をどこで呼んで、どこを新しく書くと実現できそう？ ざっくり2〜3行でOK。」
    The human sketches a relay such as `user action -> UI -> reused/new API client -> handler -> business logic -> DB/job -> response -> UI`. Use only applicable steps; asynchronous acknowledgement and later completion may be separate. Mark each handoff **reuse/import existing / modify existing / write new / unknown**, plus the main data passed. Do not pre-answer the full relay. If the human already gave a relay, reflect it without asking again.
 3. **Check understanding (agent):** Compare the human's relay to inspected code, explain only consequential missing/misplaced handoffs (one at a time), and ask them to correct or complete the flow. Confirm they roughly understand input, existing function calls, new code, server/data boundaries, and the returned user-visible result. No line-by-line code or exact syntax is required.
+**Mandatory critique before advancing — review every human design proposal (agent):** Do not treat the human's relay, data placement, API, state model, or other design suggestion as correct just because it sounds plausible. **Before agreeing or asking about the next design topic**, actively check it against the confirmed outcome, inspected repository code/contracts/tests, trust and ownership boundaries, existing behavior, and the smallest viable alternative. In a short, concrete response:
+
+- State what is correct in the proposal, with verified evidence where possible.
+- Point out any material defect, missing handoff, unverified assumption, or consequence for users/system. Label hypotheses as unverified; never invent repository facts.
+- If there is a better design, recommend it and explain **why it is better here**, including the material cost or trade-off compared with the human's proposal.
+- Discuss the **highest-impact unresolved issue** before moving on. Ask at most **one** focused question; do not replace discussion with a premature two-option choice or silently approve a challenged decision.
+
+If no material flaw or better alternative is supported, **explicitly say the proposal has no identified material issue** and why; do not manufacture objections. This is a critical review, not automatic disagreement. Repeat this review when the human revises the proposal, before Gate A, and whenever a new human-owned design choice arises.
+
 4. **Prompt the human for an initial design policy (agent -> human; mandatory):** Once the relay is understood, ask:
    「この機能はまずどこまで作れば十分だと思う？ どんな型・関数・処理の分け方にしたい？ 気になる点を1つだけでも教えて。」
    Accept an initial guess rather than a complete architecture. The agent must help when stuck: offer **one very short, clearly labeled AI suggestion** for a minimal design policy and **one** relevant issue from the actual feature, in about one sentence each, then ask the human to accept, change, or challenge them. Do **not** replace this prompt with a long AI proposal or a repeat of the same question.
